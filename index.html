@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desafio IA 3 Dias — Money Masters</title>
+  <meta name="description" content="Aprende a vender soluções de IA em 3 dias. Desafio gratuito ao vivo com Money Masters. 28, 29 e 30 de Abril às 21h.">
+  <meta name="author" content="Money Masters">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Desafio IA 3 Dias — Money Masters">
+  <meta property="og:description" content="Aprende a vender soluções de IA em 3 dias. Desafio gratuito ao vivo com Money Masters. 28, 29 e 30 de Abril às 21h.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Desafio IA 3 Dias — Money Masters">
+  <meta name="twitter:description" content="Aprende a vender soluções de IA em 3 dias. Desafio gratuito ao vivo com Money Masters. 28, 29 e 30 de Abril às 21h.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --background: #0a0a0a;
+      --foreground: #f2f2f2;
+      --card: #121212;
+      --card-foreground: #f2f2f2;
+      --primary: #00d162;
+      --primary-foreground: #0a0a0a;
+      --secondary: #1f1f1f;
+      --muted: #242424;
+      --muted-foreground: #8c8c8c;
+      --border: #292929;
+      --destructive: #ef4444;
+      --radius: 0.75rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .font-heading { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* CTA glow */
+    .cta-glow {
+      box-shadow: 0 0 30px rgba(0, 209, 98, 0.3), 0 0 60px rgba(0, 209, 98, 0.1);
+    }
+    .cta-glow:hover {
+      box-shadow: 0 0 40px rgba(0, 209, 98, 0.4), 0 0 80px rgba(0, 209, 98, 0.15);
+    }
+
+    /* Live pulse */
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.8); }
+    }
+    .live-pulse {
+      animation: live-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Scroll reveal */
+    @keyframes reveal-up {
+      0% { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .reveal-up {
+      animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .scroll-hidden { opacity: 0; }
+    .scroll-visible { opacity: 1; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* Scroll animations */
+    .scroll-fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .scroll-scale {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .scroll-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .scroll-slide-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .scroll-slide-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .scroll-slide-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .scroll-slide-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Full-page particles canvas */
+    #global-particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Hero particles canvas (dense, on top) */
+    #hero-particles {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Floating code tokens */
+    .floating-tokens {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .token {
+      position: absolute;
+      font-family: 'Space Grotesk', monospace;
+      pointer-events: none;
+      opacity: 0;
+      white-space: nowrap;
+      user-select: none;
+    }
+    @keyframes token-float {
+      0% { opacity: 0; transform: translateY(20px) rotate(var(--rot-start)); }
+      15% { opacity: var(--max-opacity); }
+      85% { opacity: var(--max-opacity); }
+      100% { opacity: 0; transform: translateY(var(--travel)) rotate(var(--rot-end)); }
+    }
+
+    /* Floating orbs - now global */
+    .global-orb {
+      position: fixed;
+      border-radius: 9999px;
+      pointer-events: none;
+      filter: blur(100px);
+      z-index: 0;
+      animation: orb-drift linear infinite;
+    }
+    .global-orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,209,98,0.07) 0%, transparent 70%);
+      animation-duration: 25s;
+    }
+    .global-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,150,255,0.05) 0%, transparent 70%);
+      animation-duration: 30s;
+      animation-delay: -10s;
+    }
+    .global-orb-3 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(217,119,6,0.04) 0%, transparent 70%);
+      animation-duration: 22s;
+      animation-delay: -5s;
+    }
+    @keyframes orb-drift {
+      0% { top: -20%; left: -10%; opacity: 0.5; }
+      25% { top: 30%; left: 80%; opacity: 0.8; }
+      50% { top: 70%; left: 20%; opacity: 0.6; }
+      75% { top: 40%; left: 60%; opacity: 0.9; }
+      100% { top: -20%; left: -10%; opacity: 0.5; }
+    }
+
+    /* Section-specific backgrounds */
+    .section-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* Circuit pattern for days section */
+    .circuit-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(90deg, var(--primary) 1px, transparent 1px),
+        linear-gradient(var(--primary) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(180deg, transparent 0%, black 30%, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 30%, black 70%, transparent 100%);
+    }
+
+    /* Data stream for testimonials */
+    .data-stream {
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      animation: stream-fall linear infinite;
+    }
+    @keyframes stream-fall {
+      0% { opacity: 0; transform: translateY(-100%); }
+      10% { opacity: 0.08; }
+      90% { opacity: 0.08; }
+      100% { opacity: 0; transform: translateY(100%); }
+    }
+
+    /* Pulse ring for CTA sections */
+    .pulse-ring {
+      position: absolute;
+      border-radius: 9999px;
+      border: 1px solid var(--primary);
+      pointer-events: none;
+      animation: pulse-expand 4s ease-out infinite;
+    }
+    @keyframes pulse-expand {
+      0% { width: 40px; height: 40px; opacity: 0.3; }
+      100% { width: 600px; height: 600px; opacity: 0; }
+    }
+
+    /* Terminal typing effect */
+    .terminal-line {
+      position: absolute;
+      font-family: 'Space Grotesk', monospace;
+      font-size: 0.6875rem;
+      color: var(--primary);
+      opacity: 0.06;
+      white-space: nowrap;
+      pointer-events: none;
+      overflow: hidden;
+      border-right: 2px solid var(--primary);
+      animation: typing 4s steps(40) infinite, blink-caret 0.75s step-end infinite;
+    }
+    @keyframes typing {
+      0% { width: 0; opacity: 0.06; }
+      5% { opacity: 0.06; }
+      50% { width: 100%; opacity: 0.06; }
+      80% { width: 100%; opacity: 0.06; }
+      95% { opacity: 0; }
+      100% { width: 0; opacity: 0; }
+    }
+    @keyframes blink-caret {
+      50% { border-color: transparent; }
+    }
+
+    /* Countdown timer */
+    .countdown {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .countdown-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .countdown-blocks {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .countdown-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 3.5rem;
+      padding: 0.5rem 0.625rem;
+      border-radius: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    .countdown-value {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .countdown-unit {
+      font-size: 0.625rem;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+    .countdown-sep {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      opacity: 0.5;
+      align-self: flex-start;
+      margin-top: 0.5rem;
+    }
+
+    /* Hero grid - enhanced */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,209,98,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,209,98,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 70%);
+    }
+
+    /* Ensure sections are relative for bg positioning */
+    .hero, .speakers, .problems, .days, .testimonials, .qualification, .final-cta {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Exit intent modal */
+    .exit-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .exit-modal-backdrop.open { display: flex; }
+    .exit-modal {
+      background: var(--card);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 30rem;
+      position: relative;
+      text-align: center;
+      animation: reveal-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+      box-shadow: 0 0 60px rgba(0, 209, 98, 0.15);
+    }
+    .exit-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .exit-modal-close:hover { color: var(--foreground); }
+    .exit-modal-emoji { font-size: 3rem; margin-bottom: 1rem; }
+    .exit-modal h3 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .exit-modal p {
+      font-size: 0.9375rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .exit-modal .btn {
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+    .exit-modal-skip {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      font-size: 0.8125rem;
+      cursor: pointer;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .exit-modal-skip:hover { color: var(--foreground); }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header removed */
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 700;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-sm {
+      height: 2.25rem;
+      border-radius: 0.375rem;
+      padding: 0 0.75rem;
+      font-size: 0.875rem;
+    }
+    .btn-lg {
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      padding: 0 2.5rem;
+      font-size: 1.125rem;
+    }
+
+    /* Sections */
+    section { border-top: 1px solid var(--border); }
+    section:first-of-type { border-top: none; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 6rem 0 5rem;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: rgba(0, 209, 98, 0.05);
+      border-radius: 9999px;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 64rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 209, 98, 0.3);
+      background: rgba(0, 209, 98, 0.1);
+      padding: 0.375rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-muted {
+      border-color: var(--border);
+      background: var(--card);
+      color: var(--muted-foreground);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    /* Live dot */
+    .live-dot {
+      position: relative;
+      display: flex;
+      height: 0.5rem;
+      width: 0.5rem;
+    }
+    .live-dot-pulse {
+      position: absolute;
+      display: inline-flex;
+      height: 100%;
+      width: 100%;
+      border-radius: 9999px;
+      background: #ef4444;
+      opacity: 0.75;
+    }
+    .live-dot-solid {
+      position: relative;
+      display: inline-flex;
+      border-radius: 9999px;
+      height: 0.5rem;
+      width: 0.5rem;
+      background: #ef4444;
+    }
+    .live-dot-green .live-dot-pulse,
+    .live-dot-green .live-dot-solid {
+      background: var(--primary);
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    h1 .text-primary { color: var(--primary); }
+
+    h2 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.875rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 3.5rem;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: rgba(242, 242, 242, 0.9);
+      margin-bottom: 1.5rem;
+    }
+    .description {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+      max-width: 48rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+      text-wrap: pretty;
+    }
+
+    /* Meta info row */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 2.5rem;
+    }
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .meta-item svg { color: var(--primary); width: 1rem; height: 1rem; }
+
+    .warning {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: var(--destructive);
+      font-weight: 500;
+    }
+
+    /* Cards */
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 1.5rem;
+    }
+
+    /* Grid layouts */
+    .grid-2 { display: grid; gap: 1.5rem; }
+    .grid-3 { display: grid; gap: 1.25rem; }
+
+    /* Speakers section */
+    .speakers { padding: 5rem 0; }
+    .speakers .container { max-width: 56rem; }
+    .speaker-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .speaker-img {
+      width: 8rem;
+      height: 8rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      border: 2px solid rgba(0, 209, 98, 0.3);
+      margin-bottom: 1.25rem;
+      box-shadow: 0 0 30px rgba(0, 209, 98, 0.12);
+    }
+    .speaker-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .speaker-name {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .speaker-role {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+    }
+    .speaker-bio {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.75;
+    }
+
+    /* Problems section */
+    .problems { padding: 5rem 0; }
+    .problems .container { max-width: 56rem; }
+    .problem-icon {
+      width: 2rem;
+      height: 2rem;
+      color: var(--destructive);
+      margin-bottom: 1rem;
+    }
+    .problem-title {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .problem-desc {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.75;
+    }
+
+    /* Days section */
+    .days { padding: 5rem 0; }
+    .days .container { max-width: 56rem; }
+    .day-cards { display: flex; flex-direction: column; gap: 1.5rem; }
+    .day-card { padding: 1.5rem; }
+    .day-inner { display: flex; flex-direction: column; gap: 1.5rem; }
+    .day-label-wrapper { flex-shrink: 0; }
+    .day-label {
+      display: inline-block;
+      border-radius: 0.5rem;
+      background: rgba(0, 209, 98, 0.1);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.375rem 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .day-date {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-top: 0.5rem;
+    }
+    .day-content { flex: 1; }
+    .day-title {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .day-desc {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .day-outcomes-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+      margin-bottom: 0.5rem;
+    }
+    .outcome-list { list-style: none; display: flex; flex-direction: column; gap: 0.375rem; }
+    .outcome-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+    .outcome-item svg {
+      width: 1rem;
+      height: 1rem;
+      color: var(--primary);
+      margin-top: 0.125rem;
+      flex-shrink: 0;
+    }
+
+    /* Testimonials */
+    .testimonials { padding: 5rem 0; }
+    .testimonials .container { max-width: 64rem; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .testimonial-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .testimonial-card:hover .testimonial-img img {
+      transform: scale(1.05);
+    }
+    .testimonial-img {
+      aspect-ratio: 16/9;
+      position: relative;
+    }
+    .testimonial-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .testimonial-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .testimonial-card:hover .testimonial-overlay {
+      background: rgba(10, 10, 10, 0.2);
+    }
+    .play-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 9999px;
+      background: rgba(0, 209, 98, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    .testimonial-card:hover .play-btn { transform: scale(1.1); }
+    .play-btn svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--primary-foreground);
+      margin-left: 2px;
+    }
+    .testimonial-name {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .testimonial-card.playing .testimonial-overlay,
+    .testimonial-card.playing .testimonial-img img { display: none; }
+    .testimonial-card.playing .testimonial-img {
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+    .testimonial-card .video-embed {
+      display: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .testimonial-card.playing .video-embed { display: block; }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      width: 100%;
+      max-width: 28rem;
+      position: relative;
+      animation: reveal-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--foreground); }
+    .modal h3 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .modal p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1.5rem;
+    }
+    .modal-form { display: flex; flex-direction: column; gap: 0.75rem; }
+    .modal-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal-input::placeholder { color: var(--muted-foreground); }
+    .modal-input:focus { border-color: var(--primary); }
+    .modal-submit {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+    .modal-disclaimer {
+      margin-top: 0.75rem !important;
+      font-size: 0.75rem !important;
+      text-align: center;
+      color: var(--muted-foreground) !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Phone input with country selector */
+    .phone-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .country-selector {
+      position: relative;
+      flex-shrink: 0;
+      width: 7rem;
+    }
+    .country-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      width: 100%;
+      height: 100%;
+      padding: 0.75rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--background);
+      color: var(--foreground);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+    }
+    .country-btn:hover, .country-btn:focus { border-color: var(--primary); outline: none; }
+    .country-btn .flag { font-size: 1.125rem; line-height: 1; }
+    .country-btn .code { font-weight: 500; }
+    .country-btn .chevron {
+      margin-left: auto;
+      color: var(--muted-foreground);
+      transition: transform 0.2s;
+    }
+    .country-selector.open .country-btn .chevron { transform: rotate(180deg); }
+    .country-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 16rem;
+      max-height: 15rem;
+      overflow-y: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      z-index: 10;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .country-selector.open .country-dropdown { display: block; }
+    .country-search {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      padding: 0.625rem 0.75rem;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      color: var(--foreground);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.8125rem;
+      outline: none;
+    }
+    .country-search::placeholder { color: var(--muted-foreground); }
+    .country-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      transition: background 0.15s;
+    }
+    .country-option:hover { background: var(--muted); }
+    .country-option .flag { font-size: 1.125rem; }
+    .country-option .name { flex: 1; color: var(--foreground); }
+    .country-option .dial { color: var(--muted-foreground); font-size: 0.75rem; }
+    .country-dropdown::-webkit-scrollbar { width: 6px; }
+    .country-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .country-dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .phone-number-input { flex: 1; }
+
+    .green-underline {
+      height: 0.25rem;
+      width: 5rem;
+      border-radius: 9999px;
+      background: var(--primary);
+      margin: 0 auto;
+    }
+
+    /* For/Not for section */
+    .qualification { padding: 5rem 0; }
+    .qualification .container { max-width: 56rem; }
+    .qual-card {
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .qual-card-green {
+      border: 1px solid rgba(0, 209, 98, 0.3);
+      background: rgba(0, 209, 98, 0.05);
+    }
+    .qual-card-red {
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.05);
+    }
+    .qual-title {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+    .qual-title-green { color: var(--primary); }
+    .qual-title-red { color: var(--destructive); }
+    .qual-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .qual-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.625rem;
+      font-size: 0.875rem;
+      line-height: 1.75;
+    }
+    .qual-item svg {
+      width: 1rem;
+      height: 1rem;
+      margin-top: 0.125rem;
+      flex-shrink: 0;
+    }
+    .qual-item-green svg { color: var(--primary); }
+    .qual-item-red svg { color: var(--destructive); }
+
+    /* Final CTA */
+    .final-cta { padding: 5rem 0; }
+    .final-cta .container {
+      max-width: 42rem;
+      text-align: center;
+    }
+    .final-cta h2 { margin-bottom: 1rem; }
+    .final-cta .description { margin-bottom: 2.5rem; font-size: 1.125rem; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+    footer .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+    footer a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--foreground); }
+    .footer-links { display: flex; gap: 1rem; }
+
+    /* Mobile compact */
+    @media (max-width: 639px) {
+      .hero { padding: 1.75rem 0 2.5rem !important; }
+      h1 { font-size: 2rem; margin-bottom: 0.625rem; }
+      .subtitle { font-size: 1.125rem; margin-bottom: 0.875rem; }
+      .description { font-size: 0.875rem; margin-bottom: 1.25rem; line-height: 1.65; }
+      .badge { font-size: 0.8125rem; padding: 0.3rem 0.875rem; margin-bottom: 0.5rem !important; }
+      .badge-muted { font-size: 0.8125rem; }
+      .meta-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.8125rem;
+        margin-bottom: 1.25rem;
+      }
+      .meta-item svg { width: 0.875rem; height: 0.875rem; }
+      .meta-item { gap: 0.3rem; }
+      .countdown { margin-bottom: 1.25rem; flex-direction: column; gap: 0.375rem; }
+      .countdown-label { font-size: 0.75rem; }
+      .countdown-block { min-width: 2.75rem; padding: 0.375rem 0.5rem; }
+      .countdown-value { font-size: 1.25rem; }
+      .countdown-unit { font-size: 0.625rem; }
+      .countdown-sep { font-size: 1rem; margin-top: 0.375rem; }
+      .countdown-blocks { gap: 0.375rem; }
+      .btn-lg { height: 3.125rem; padding: 0 1.75rem; font-size: 1rem; }
+      .warning { font-size: 0.8125rem; margin-top: 0.75rem; }
+    }
+
+    /* Responsive */
+    @media (min-width: 640px) {
+      .container { padding: 0 1.5rem; }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      footer .container { flex-direction: row; }
+    }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 3rem; line-height: 1.18; }
+      h2 { font-size: 2.25rem; }
+      .hero { padding: 5rem 0 7rem; }
+      .speakers, .problems, .days, .testimonials, .qualification, .final-cta { padding: 7rem 0; }
+      .subtitle { font-size: 1.5rem; }
+      .description { font-size: 1.125rem; }
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .speaker-card { padding: 2rem; }
+      .speaker-img { width: 9rem; height: 9rem; }
+      .day-card { padding: 2rem; }
+      .day-inner { flex-direction: row; }
+      .qual-card { padding: 2rem; }
+      .btn-lg { font-size: 1.125rem; }
+    }
+
+    @media (min-width: 1024px) {
+      h1 { font-size: 3.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+
+  <!-- Global motion elements -->
+  <canvas id="global-particles"></canvas>
+  <div class="floating-tokens" id="floatingTokens"></div>
+  <div class="global-orb global-orb-1"></div>
+  <div class="global-orb global-orb-2"></div>
+  <div class="global-orb global-orb-3"></div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" style="padding-top:3rem;">
+      <div class="hero-grid"></div>
+      <canvas id="hero-particles"></canvas>
+      <div class="hero-glow"></div>
+      <div class="container hero-content">
+        <div class="badge" style="margin-bottom: 1rem;">WEBINAR GRATUITO</div>
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+          <div class="badge badge-muted">
+            <span class="live-dot">
+              <span class="live-dot-pulse live-pulse"></span>
+              <span class="live-dot-solid"></span>
+            </span>
+            LIVE &mdash; 28, 29 e 30 de Abril
+          </div>
+        </div>
+        <h1>Usa IA Para Fazer <span class="text-primary">5.000&euro;-10.000&euro;/M&ecirc;s</span> A Vender Solu&ccedil;&otilde;es a Empresas</h1>
+        <p class="subtitle">A Trabalhar Apenas 20-25 Horas Por Semana</p>
+        <p class="description">Em 3 dias, vamos mostrar-te como vender solu&ccedil;&otilde;es de IA a empresas &mdash; onde a IA faz 80% do trabalho &mdash; para poderes escalar sem burnout, sem contratar equipa, e sem ver as tuas margens desaparecerem.</p>
+        <div class="meta-row">
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+            28, 29 e 30 Abril &agrave;s 21h (hora de Lisboa)
+          </span>
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+            Sess&otilde;es de 2h via Google Meet
+          </span>
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            Grupo WhatsApp exclusivo
+          </span>
+        </div>
+        <div class="countdown" id="countdown">
+          <span class="countdown-label">Come&ccedil;a em:</span>
+          <div class="countdown-blocks">
+            <div class="countdown-block"><span class="countdown-value" id="cd-days">00</span><span class="countdown-unit">Dias</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd-hours">00</span><span class="countdown-unit">Horas</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd-mins">00</span><span class="countdown-unit">Min</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd-secs">00</span><span class="countdown-unit">Seg</span></div>
+          </div>
+        </div>
+        <a href="#cta" class="btn btn-lg cta-glow" id="cta">Quero a Minha Vaga Gratuita &rarr;</a>
+        <p class="warning">&#9888;&#65039; Limitado a 500 participantes</p>
+      </div>
+    </section>
+
+    <!-- Speakers -->
+    <section class="speakers">
+      <div class="section-bg">
+        <div class="terminal-line" style="top:15%;left:5%;animation-delay:0s;">$ claude --model opus "analyze market opportunity"</div>
+        <div class="terminal-line" style="top:70%;right:5%;left:auto;animation-delay:2s;">$ npx create-ai-solution --template agency</div>
+      </div>
+      <div class="container">
+        <h2>Quem Te Vai Ensinar</h2>
+        <div class="grid-2">
+          <div class="card speaker-card reveal-up delay-1">
+            <div class="speaker-img">
+              <img src="andre.jpeg" alt="Andr&eacute; Vedor">
+            </div>
+            <h3 class="speaker-name">Andr&eacute; Vedor</h3>
+            <p class="speaker-role">Founder, Money Masters</p>
+            <p class="speaker-bio">Fundador do Money Masters, uma comunidade de IA com mais de 110 membros activos &mdash; todos a construir e escalar neg&oacute;cios de intelig&ecirc;ncia artificial.</p>
+          </div>
+          <div class="card speaker-card reveal-up delay-2">
+            <div class="speaker-img">
+              <img src="diogo.jpeg" alt="Diogo Kopke">
+            </div>
+            <h3 class="speaker-name">Diogo Kopke</h3>
+            <p class="speaker-role">Founder, Kopkai</p>
+            <p class="speaker-bio">Fundador da Kopkai, uma empresa que j&aacute; entregou mais de 50 projectos de IA nos &uacute;ltimos 18 meses. Especialista em implementa&ccedil;&atilde;o t&eacute;cnica de solu&ccedil;&otilde;es de automa&ccedil;&atilde;o e agentes de IA.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problems -->
+    <section class="problems">
+      <div class="section-bg">
+        <div class="terminal-line" style="top:20%;left:3%;animation-delay:1s;">$ claude "quais soluções de IA vendem mais?"</div>
+        <div class="terminal-line" style="bottom:25%;right:3%;left:auto;animation-delay:3.5s;">revenue += client.monthlyRetainer // €2.500/mês</div>
+      </div>
+      <div class="container">
+        <h2>O Maior Problema de Come&ccedil;ar Uma Ag&ecirc;ncia de IA Sempre Foi Descobrir O Que Vender.</h2>
+        <div class="grid-3">
+          <div class="card scroll-scale">
+            <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <h3 class="problem-title">N&atilde;o sabes o que vender</h3>
+            <p class="problem-desc">J&aacute; experimentaste dropshipping, SMMA, freelancing, automa&ccedil;&otilde;es... Cada vez que mudas, voltas &agrave; estaca zero.</p>
+          </div>
+          <div class="card scroll-scale">
+            <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <h3 class="problem-title">N&atilde;o tens compet&ecirc;ncias t&eacute;cnicas</h3>
+            <p class="problem-desc">Achas que precisas de saber programar para vender IA. N&atilde;o precisas.</p>
+          </div>
+          <div class="card scroll-scale">
+            <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <h3 class="problem-title">N&atilde;o consegues clientes</h3>
+            <p class="problem-desc">Tens a ideia, talvez at&eacute; saibas fazer, mas n&atilde;o sabes como vender nem a quem.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 Days -->
+    <section class="days">
+      <div class="section-bg">
+        <div class="circuit-lines"></div>
+        <div class="terminal-line" style="top:8%;left:4%;animation-delay:0.5s;">$ claude code --build "chatbot para imobiliária"</div>
+        <div class="terminal-line" style="top:40%;right:4%;left:auto;animation-delay:2.5s;">const proposal = await generateProposal(client, "€3.000/mês")</div>
+        <div class="terminal-line" style="bottom:12%;left:8%;animation-delay:4.5s;">$ deploy --production ai-solution.vercel.app ✓</div>
+      </div>
+      <div class="container">
+        <h2>O Que Vamos Cobrir Nos Pr&oacute;ximos 3 Dias</h2>
+        <div class="day-cards">
+          <!-- Day 1 -->
+          <div class="card day-card reveal-up delay-1">
+            <div class="day-inner">
+              <div class="day-label-wrapper">
+                <span class="day-label">DIA 1</span>
+                <p class="day-date">Segunda, 28 Abril, 21h</p>
+              </div>
+              <div class="day-content">
+                <h3 class="day-title">As Solu&ccedil;&otilde;es de IA Que Mais Est&atilde;o a Vender</h3>
+                <p class="day-desc">Vou mostrar-te exactamente quais s&atilde;o as solu&ccedil;&otilde;es de IA que empresas portuguesas est&atilde;o a comprar agora &mdash; e quanto est&atilde;o a pagar. Nada de teoria, s&oacute; o que funciona.</p>
+                <p class="day-outcomes-label">O que vais sair com:</p>
+                <ul class="outcome-list">
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Uma solu&ccedil;&atilde;o espec&iacute;fica para vender</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Um nicho rent&aacute;vel identificado</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Lista de empresas para contactar</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Day 2 -->
+          <div class="card day-card reveal-up delay-2">
+            <div class="day-inner">
+              <div class="day-label-wrapper">
+                <span class="day-label">DIA 2</span>
+                <p class="day-date">Ter&ccedil;a, 29 Abril, 21h</p>
+              </div>
+              <div class="day-content">
+                <h3 class="day-title">Como Construir Solu&ccedil;&otilde;es com Claude Code</h3>
+                <p class="day-desc">Vou construir uma solu&ccedil;&atilde;o de IA completa &agrave; tua frente, em tempo real. Sem c&oacute;digo. S&oacute; com Claude Code. E vais aprender a fazer o mesmo.</p>
+                <p class="day-outcomes-label">O que vais sair com:</p>
+                <ul class="outcome-list">
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Uma solu&ccedil;&atilde;o funcional constru&iacute;da</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Entender como usar Claude Code para criar qualquer coisa</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Um sample para mostrar a potenciais clientes</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Day 3 -->
+          <div class="card day-card reveal-up delay-3">
+            <div class="day-inner">
+              <div class="day-label-wrapper">
+                <span class="day-label">DIA 3</span>
+                <p class="day-date">Quarta, 30 Abril, 21h</p>
+              </div>
+              <div class="day-content">
+                <h3 class="day-title">Como Vender e Fechar Clientes</h3>
+                <p class="day-desc">A parte que faz dinheiro. Cold outreach, scripts de venda, como conduzir reuni&otilde;es, e como fechar contratos de 1.000&euro;-3.000&euro;/m&ecirc;s.</p>
+                <p class="day-outcomes-label">O que vais sair com:</p>
+                <ul class="outcome-list">
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Sistema de aquisi&ccedil;&atilde;o de clientes</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Scripts de outreach e venda</span>
+                  </li>
+                  <li class="outcome-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Confian&ccedil;a para fechar o primeiro cliente</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonialsSection">
+      <div class="section-bg" id="dataStreams"></div>
+      <div class="container">
+        <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+          <div class="badge">
+            <span class="live-dot live-dot-green">
+              <span class="live-dot-pulse live-pulse"></span>
+              <span class="live-dot-solid"></span>
+            </span>
+            AINDA COM D&Uacute;VIDAS?
+          </div>
+        </div>
+        <h2 style="margin-bottom: 0.75rem;">O Que Os Nossos Clientes Est&atilde;o a Conseguir</h2>
+        <div style="display: flex; justify-content: center; margin-bottom: 3.5rem;">
+          <div class="green-underline"></div>
+        </div>
+        <div class="testimonials-grid">
+          <div data-video="brKspuSyrM8" onclick="playVideo(this)" class="testimonial-card reveal-up delay-1" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/brKspuSyrM8/hqdefault.jpg" alt="Josias Pontes" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Josias Pontes &mdash; Fechei 2 clientes dentro da comunidade</p>
+          </div>
+          <div data-video="Dg-AagVj7Nw" onclick="playVideo(this)" class="testimonial-card reveal-up delay-2" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/Dg-AagVj7Nw/hqdefault.jpg" alt="David Gon&ccedil;alves" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">David Gon&ccedil;alves &mdash; Fechei 3 clientes em 45 dias</p>
+          </div>
+          <div data-video="-4-Uo_Tucmk" onclick="playVideo(this)" class="testimonial-card reveal-up delay-3" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/-4-Uo_Tucmk/hqdefault.jpg" alt="Rodrigo Medalha" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Rodrigo Medalha &mdash; Tripliquei a minha fatura&ccedil;&atilde;o</p>
+          </div>
+          <div data-video="BQOG9YTarec" onclick="playVideo(this)" class="testimonial-card reveal-up delay-4" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/BQOG9YTarec/hqdefault.jpg" alt="Diogo Coutinho" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Diogo Coutinho &mdash; Faturei 20.000&euro; em Fevereiro</p>
+          </div>
+          <div data-video="srCsVzZW2iA" onclick="playVideo(this)" class="testimonial-card reveal-up delay-1" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/srCsVzZW2iA/hqdefault.jpg" alt="Alexandre Melo" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Alexandre Melo &mdash; Neg&oacute;cio de 15.000&euro;</p>
+          </div>
+          <div data-video="n9DPFJRExeA" onclick="playVideo(this)" class="testimonial-card reveal-up delay-2" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/n9DPFJRExeA/hqdefault.jpg" alt="MedGenius" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">MedGenius &mdash; De 2k/m&ecirc;s para 10k/m&ecirc;s</p>
+          </div>
+          <div data-video="sbYM_ASsAYk" onclick="playVideo(this)" class="testimonial-card reveal-up delay-3" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/sbYM_ASsAYk/hqdefault.jpg" alt="Klick" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Klick &mdash; 35.000&euro; em 45 dias</p>
+          </div>
+          <div data-video="g2lp7GThzgY" onclick="playVideo(this)" class="testimonial-card reveal-up delay-4" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/g2lp7GThzgY/hqdefault.jpg" alt="Jo&atilde;o Aleixo" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Jo&atilde;o Aleixo &mdash; Dupliquei os meus pre&ccedil;os</p>
+          </div>
+          <div data-video="tEqxJlF89IQ" onclick="playVideo(this)" class="testimonial-card reveal-up delay-1" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/tEqxJlF89IQ/hqdefault.jpg" alt="Primeiro cliente" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Fechei o meu primeiro cliente</p>
+          </div>
+          <div data-video="S-8vYFO7Q5c" onclick="playVideo(this)" class="testimonial-card reveal-up delay-2" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/S-8vYFO7Q5c/hqdefault.jpg" alt="2 clientes" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Sai do meu trabalho e fechei 2 clientes</p>
+          </div>
+          <div data-video="PTzEtBabKf8" onclick="playVideo(this)" class="testimonial-card reveal-up delay-3" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/PTzEtBabKf8/hqdefault.jpg" alt="Marcelo Santos" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Marcelo Santos &mdash; Fechei um cliente de 7.000&euro;</p>
+          </div>
+          <div data-video="G7ulp_uspE0" onclick="playVideo(this)" class="testimonial-card reveal-up delay-4" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/G7ulp_uspE0/hqdefault.jpg" alt="Davide Calheiros" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Davide Calheiros &mdash; Fechei 3.000&euro; em 1 semana</p>
+          </div>
+          <div data-video="ITGk5RWYfKI" onclick="playVideo(this)" class="testimonial-card reveal-up delay-1" style="cursor:pointer;">
+            <div class="testimonial-img">
+              <img src="https://img.youtube.com/vi/ITGk5RWYfKI/hqdefault.jpg" alt="Diogo Kopke" loading="lazy">
+              <div class="testimonial-overlay">
+                <div class="play-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg></div>
+              </div>
+              <iframe class="video-embed" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+            </div>
+            <p class="testimonial-name">Diogo Kopke &mdash; Fechei o primeiro cliente em 3 dias</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Qualification -->
+    <section class="qualification">
+      <div class="section-bg">
+        <div class="terminal-line" style="top:30%;left:5%;animation-delay:1.5s;">if (client.isIdeal) { sendProposal(); closeDeal(); }</div>
+        <div class="terminal-line" style="bottom:30%;right:5%;left:auto;animation-delay:3s;">$ claude "prepara script de cold outreach"</div>
+      </div>
+      <div class="container">
+        <div class="grid-2">
+          <div class="qual-card qual-card-green scroll-slide-left">
+            <h3 class="qual-title qual-title-green">Isto &eacute; para ti se:</h3>
+            <ul class="qual-list">
+              <li class="qual-item qual-item-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>Queres come&ccedil;ar a vender servi&ccedil;os de IA mas n&atilde;o sabes por onde come&ccedil;ar</span>
+              </li>
+              <li class="qual-item qual-item-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>J&aacute; tens alguma experi&ecirc;ncia com IA/automa&ccedil;&otilde;es mas n&atilde;o consegues monetizar</span>
+              </li>
+              <li class="qual-item qual-item-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>Est&aacute;s disposto a aparecer nas 3 sess&otilde;es e implementar</span>
+              </li>
+              <li class="qual-item qual-item-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                <span>Queres um sistema, n&atilde;o &ldquo;mais um curso&rdquo;</span>
+              </li>
+            </ul>
+          </div>
+          <div class="qual-card qual-card-red scroll-slide-right">
+            <h3 class="qual-title qual-title-red">Isto N&Atilde;O &eacute; para ti se:</h3>
+            <ul class="qual-list">
+              <li class="qual-item qual-item-red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <span>Procuras dinheiro f&aacute;cil sem esfor&ccedil;o</span>
+              </li>
+              <li class="qual-item qual-item-red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <span>N&atilde;o vais assistir &agrave;s sess&otilde;es ao vivo</span>
+              </li>
+              <li class="qual-item qual-item-red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <span>N&atilde;o est&aacute;s disposto a falar com potenciais clientes</span>
+              </li>
+              <li class="qual-item qual-item-red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <span>Queres s&oacute; consumir conte&uacute;do e nunca agir</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <div class="section-bg">
+        <div class="pulse-ring" style="top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0s;"></div>
+        <div class="pulse-ring" style="top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:1.3s;"></div>
+        <div class="pulse-ring" style="top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:2.6s;"></div>
+      </div>
+      <div class="container reveal-up" style="position:relative;z-index:1;">
+        <h2>28, 29 e 30 de Abril. 21h. Ao Vivo.</h2>
+        <p class="description">3 noites. &Eacute; tudo o que precisas para come&ccedil;ar a vender solu&ccedil;&otilde;es de IA a empresas portuguesas.</p>
+        <div class="countdown" id="countdown2">
+          <span class="countdown-label">Come&ccedil;a em:</span>
+          <div class="countdown-blocks">
+            <div class="countdown-block"><span class="countdown-value" id="cd2-days">00</span><span class="countdown-unit">Dias</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd2-hours">00</span><span class="countdown-unit">Horas</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd2-mins">00</span><span class="countdown-unit">Min</span></div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-block"><span class="countdown-value" id="cd2-secs">00</span><span class="countdown-unit">Seg</span></div>
+          </div>
+        </div>
+        <a href="#cta" class="btn btn-lg cta-glow">Garantir a Minha Vaga &rarr;</a>
+        <p class="warning">&#9888;&#65039; Apenas 500 vagas dispon&iacute;veis</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 Money Masters</span>
+      <div class="footer-links">
+        <a href="#">Termos</a>
+        <a href="#">Privacidade</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Registration Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()" aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <h3>Garante a Tua Vaga</h3>
+      <p>Preenche os dados abaixo para te registares no Desafio IA 3 Dias.</p>
+      <form class="modal-form" onsubmit="handleSubmit(event)">
+        <input class="modal-input" type="text" name="name" placeholder="Nome completo" required>
+        <input class="modal-input" type="email" name="email" placeholder="Email" required>
+        <div class="phone-row">
+          <div class="country-selector" id="countrySelector">
+            <button type="button" class="country-btn" onclick="toggleCountryDropdown()">
+              <span class="flag" id="selectedFlag">&#127477;&#127481;</span>
+              <span class="code" id="selectedCode">+351</span>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="country-dropdown" id="countryDropdown">
+              <input type="text" class="country-search" id="countrySearch" placeholder="Procurar pa&iacute;s..." oninput="filterCountries(this.value)">
+              <div id="countryList"></div>
+            </div>
+          </div>
+          <input class="modal-input phone-number-input" type="tel" name="phone" placeholder="N&uacute;mero de telem&oacute;vel" required>
+          <input type="hidden" name="dial_code" id="dialCodeInput" value="+351">
+        </div>
+        <button type="submit" class="btn btn-lg cta-glow modal-submit">Quero Participar &rarr;</button>
+      </form>
+      <p class="modal-disclaimer">Os teus dados est&atilde;o seguros. N&atilde;o enviamos spam.</p>
+    </div>
+  </div>
+
+  <!-- Exit Intent Modal -->
+  <div class="exit-modal-backdrop" id="exitModal">
+    <div class="exit-modal">
+      <button class="exit-modal-close" onclick="closeExitModal()" aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <div class="exit-modal-emoji">&#9888;&#65039;</div>
+      <h3>Espera &mdash; tens a certeza?</h3>
+      <p>O Desafio IA 3 Dias come&ccedil;a dia <strong>28 de Abril</strong> e s&oacute; temos <strong>500 vagas</strong>. N&atilde;o queremos que percas esta oportunidade.</p>
+      <button class="btn btn-lg cta-glow" onclick="closeExitModal(); openModal();">Quero Garantir a Minha Vaga &rarr;</button>
+      <br>
+      <button class="exit-modal-skip" onclick="closeExitModal()">N&atilde;o, obrigado</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // === Countdown timer ===
+    (function() {
+      // 28 Abril 2025, 21:00 hora de Lisboa (UTC+1 / WEST UTC+1)
+      var target = new Date('2026-04-28T20:00:00Z'); // 21h Lisboa = 20h UTC
+
+      function update() {
+        var now = new Date();
+        var diff = target - now;
+
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-mins').textContent = '00';
+          document.getElementById('cd-secs').textContent = '00';
+          return;
+        }
+
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        var dd = days < 10 ? '0' + days : days;
+        var hh = hours < 10 ? '0' + hours : hours;
+        var mm = mins < 10 ? '0' + mins : mins;
+        var ss = secs < 10 ? '0' + secs : secs;
+        document.getElementById('cd-days').textContent = dd;
+        document.getElementById('cd-hours').textContent = hh;
+        document.getElementById('cd-mins').textContent = mm;
+        document.getElementById('cd-secs').textContent = ss;
+        if (document.getElementById('cd2-days')) {
+          document.getElementById('cd2-days').textContent = dd;
+          document.getElementById('cd2-hours').textContent = hh;
+          document.getElementById('cd2-mins').textContent = mm;
+          document.getElementById('cd2-secs').textContent = ss;
+        }
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
+
+    // === Country phone selector ===
+    var countries = [
+      {name:'Portugal',code:'+351',flag:'\u{1F1F5}\u{1F1F9}'},
+      {name:'Brasil',code:'+55',flag:'\u{1F1E7}\u{1F1F7}'},
+      {name:'Espanha',code:'+34',flag:'\u{1F1EA}\u{1F1F8}'},
+      {name:'Angola',code:'+244',flag:'\u{1F1E6}\u{1F1F4}'},
+      {name:'Mo\u00e7ambique',code:'+258',flag:'\u{1F1F2}\u{1F1FF}'},
+      {name:'Cabo Verde',code:'+238',flag:'\u{1F1E8}\u{1F1FB}'},
+      {name:'Fran\u00e7a',code:'+33',flag:'\u{1F1EB}\u{1F1F7}'},
+      {name:'Alemanha',code:'+49',flag:'\u{1F1E9}\u{1F1EA}'},
+      {name:'Reino Unido',code:'+44',flag:'\u{1F1EC}\u{1F1E7}'},
+      {name:'Estados Unidos',code:'+1',flag:'\u{1F1FA}\u{1F1F8}'},
+      {name:'Canad\u00e1',code:'+1',flag:'\u{1F1E8}\u{1F1E6}'},
+      {name:'It\u00e1lia',code:'+39',flag:'\u{1F1EE}\u{1F1F9}'},
+      {name:'Pa\u00edses Baixos',code:'+31',flag:'\u{1F1F3}\u{1F1F1}'},
+      {name:'B\u00e9lgica',code:'+32',flag:'\u{1F1E7}\u{1F1EA}'},
+      {name:'Su\u00ed\u00e7a',code:'+41',flag:'\u{1F1E8}\u{1F1ED}'},
+      {name:'Luxemburgo',code:'+352',flag:'\u{1F1F1}\u{1F1FA}'},
+      {name:'\u00c1ustria',code:'+43',flag:'\u{1F1E6}\u{1F1F9}'},
+      {name:'Irlanda',code:'+353',flag:'\u{1F1EE}\u{1F1EA}'},
+      {name:'Pol\u00f3nia',code:'+48',flag:'\u{1F1F5}\u{1F1F1}'},
+      {name:'Noruega',code:'+47',flag:'\u{1F1F3}\u{1F1F4}'},
+      {name:'Su\u00e9cia',code:'+46',flag:'\u{1F1F8}\u{1F1EA}'},
+      {name:'Dinamarca',code:'+45',flag:'\u{1F1E9}\u{1F1F0}'},
+      {name:'Finl\u00e2ndia',code:'+358',flag:'\u{1F1EB}\u{1F1EE}'},
+      {name:'Gr\u00e9cia',code:'+30',flag:'\u{1F1EC}\u{1F1F7}'},
+      {name:'Rom\u00e9nia',code:'+40',flag:'\u{1F1F7}\u{1F1F4}'},
+      {name:'Rep\u00fablica Checa',code:'+420',flag:'\u{1F1E8}\u{1F1FF}'},
+      {name:'Hungria',code:'+36',flag:'\u{1F1ED}\u{1F1FA}'},
+      {name:'Turquia',code:'+90',flag:'\u{1F1F9}\u{1F1F7}'},
+      {name:'R\u00fassia',code:'+7',flag:'\u{1F1F7}\u{1F1FA}'},
+      {name:'\u00cdndia',code:'+91',flag:'\u{1F1EE}\u{1F1F3}'},
+      {name:'China',code:'+86',flag:'\u{1F1E8}\u{1F1F3}'},
+      {name:'Jap\u00e3o',code:'+81',flag:'\u{1F1EF}\u{1F1F5}'},
+      {name:'Coreia do Sul',code:'+82',flag:'\u{1F1F0}\u{1F1F7}'},
+      {name:'Austr\u00e1lia',code:'+61',flag:'\u{1F1E6}\u{1F1FA}'},
+      {name:'M\u00e9xico',code:'+52',flag:'\u{1F1F2}\u{1F1FD}'},
+      {name:'Argentina',code:'+54',flag:'\u{1F1E6}\u{1F1F7}'},
+      {name:'Col\u00f4mbia',code:'+57',flag:'\u{1F1E8}\u{1F1F4}'},
+      {name:'Chile',code:'+56',flag:'\u{1F1E8}\u{1F1F1}'},
+      {name:'Peru',code:'+51',flag:'\u{1F1F5}\u{1F1EA}'},
+      {name:'Venezuela',code:'+58',flag:'\u{1F1FB}\u{1F1EA}'},
+      {name:'Equador',code:'+593',flag:'\u{1F1EA}\u{1F1E8}'},
+      {name:'Uruguai',code:'+598',flag:'\u{1F1FA}\u{1F1FE}'},
+      {name:'Paraguai',code:'+595',flag:'\u{1F1F5}\u{1F1FE}'},
+      {name:'Marrocos',code:'+212',flag:'\u{1F1F2}\u{1F1E6}'},
+      {name:'\u00c1frica do Sul',code:'+27',flag:'\u{1F1FF}\u{1F1E6}'},
+      {name:'Nig\u00e9ria',code:'+234',flag:'\u{1F1F3}\u{1F1EC}'},
+      {name:'Egito',code:'+20',flag:'\u{1F1EA}\u{1F1EC}'},
+      {name:'Israel',code:'+972',flag:'\u{1F1EE}\u{1F1F1}'},
+      {name:'Emirados \u00c1rabes',code:'+971',flag:'\u{1F1E6}\u{1F1EA}'},
+      {name:'Ar\u00e1bia Saudita',code:'+966',flag:'\u{1F1F8}\u{1F1E6}'},
+      {name:'Singapura',code:'+65',flag:'\u{1F1F8}\u{1F1EC}'},
+      {name:'Tail\u00e2ndia',code:'+66',flag:'\u{1F1F9}\u{1F1ED}'},
+      {name:'Indon\u00e9sia',code:'+62',flag:'\u{1F1EE}\u{1F1E9}'},
+      {name:'Filipinas',code:'+63',flag:'\u{1F1F5}\u{1F1ED}'},
+      {name:'Mal\u00e1sia',code:'+60',flag:'\u{1F1F2}\u{1F1FE}'},
+      {name:'Guin\u00e9-Bissau',code:'+245',flag:'\u{1F1EC}\u{1F1FC}'},
+      {name:'S\u00e3o Tom\u00e9 e Pr\u00edncipe',code:'+239',flag:'\u{1F1F8}\u{1F1F9}'},
+      {name:'Timor-Leste',code:'+670',flag:'\u{1F1F9}\u{1F1F1}'},
+      {name:'Macau',code:'+853',flag:'\u{1F1F2}\u{1F1F4}'}
+    ];
+
+    function renderCountries(filter) {
+      var list = document.getElementById('countryList');
+      var q = (filter || '').toLowerCase();
+      var html = '';
+      countries.forEach(function(c) {
+        if (q && c.name.toLowerCase().indexOf(q) === -1 && c.code.indexOf(q) === -1) return;
+        html += '<div class="country-option" onclick="selectCountry(\'' + c.flag + '\',\'' + c.code + '\')">'
+          + '<span class="flag">' + c.flag + '</span>'
+          + '<span class="name">' + c.name + '</span>'
+          + '<span class="dial">' + c.code + '</span>'
+          + '</div>';
+      });
+      list.innerHTML = html;
+    }
+    renderCountries('');
+
+    function toggleCountryDropdown() {
+      var sel = document.getElementById('countrySelector');
+      var isOpen = sel.classList.toggle('open');
+      if (isOpen) {
+        var search = document.getElementById('countrySearch');
+        search.value = '';
+        renderCountries('');
+        setTimeout(function() { search.focus(); }, 50);
+      }
+    }
+    function selectCountry(flag, code) {
+      document.getElementById('selectedFlag').textContent = flag;
+      document.getElementById('selectedCode').textContent = code;
+      document.getElementById('dialCodeInput').value = code;
+      document.getElementById('countrySelector').classList.remove('open');
+    }
+    function filterCountries(q) { renderCountries(q); }
+
+    // Close dropdown on outside click
+    document.addEventListener('click', function(e) {
+      var sel = document.getElementById('countrySelector');
+      if (sel && !sel.contains(e.target)) sel.classList.remove('open');
+    });
+
+    // === Registration Modal ===
+    function openModal() {
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closeModal(); closeExitModal(); }
+    });
+    function handleSubmit(e) {
+      e.preventDefault();
+      var form = e.target;
+      var dialCode = document.getElementById('dialCodeInput').value;
+      var data = { name: form.name.value, email: form.email.value, phone: dialCode + ' ' + form.phone.value };
+      console.log('Registration:', data);
+      form.innerHTML = '<div style="text-align:center;padding:2rem 0;"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00d162" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><h3 style="font-family:Space Grotesk,system-ui,sans-serif;margin-top:1rem;font-size:1.25rem;">Vaga Garantida!</h3><p style="color:#8c8c8c;font-size:0.875rem;margin-top:0.5rem;">Vais receber um email com os detalhes e o link do grupo de WhatsApp.</p></div>';
+      exitShown = true; // Prevent exit modal after registration
+    }
+
+    // CTA buttons open modal
+    document.querySelectorAll('.btn').forEach(function(btn) {
+      if (btn.closest('.modal') || btn.closest('.exit-modal') || btn.classList.contains('modal-close') || btn.classList.contains('exit-modal-close')) return;
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+      });
+    });
+
+    // === Video embed ===
+    function playVideo(card) {
+      if (card.classList.contains('playing')) return;
+      var videoId = card.dataset.video;
+      var iframe = card.querySelector('.video-embed');
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+      card.classList.add('playing');
+    }
+
+    // === Scroll reveal (original) ===
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('scroll-hidden');
+          entry.target.classList.add('scroll-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-up').forEach(function(el) {
+      el.classList.add('scroll-hidden');
+      revealObserver.observe(el);
+    });
+
+    // === Scroll animations (new) ===
+    var scrollAnimObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          scrollAnimObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.scroll-fade-in, .scroll-scale, .scroll-slide-left, .scroll-slide-right').forEach(function(el) {
+      scrollAnimObserver.observe(el);
+    });
+
+    // === Global neural network particles ===
+    (function() {
+      // Hero canvas (dense, local)
+      var heroCanvas = document.getElementById('hero-particles');
+      var heroCtx = heroCanvas ? heroCanvas.getContext('2d') : null;
+      var heroSection = heroCanvas ? heroCanvas.closest('.hero') : null;
+      var heroParticles = [];
+
+      // Global canvas (sparse, full page)
+      var globalCanvas = document.getElementById('global-particles');
+      var globalCtx = globalCanvas ? globalCanvas.getContext('2d') : null;
+      var globalParticles = [];
+
+      function resizeHero() {
+        if (!heroCanvas || !heroSection) return;
+        heroCanvas.width = heroSection.offsetWidth;
+        heroCanvas.height = heroSection.offsetHeight;
+      }
+      function resizeGlobal() {
+        if (!globalCanvas) return;
+        globalCanvas.width = window.innerWidth;
+        globalCanvas.height = window.innerHeight;
+      }
+      resizeHero(); resizeGlobal();
+      window.addEventListener('resize', function() { resizeHero(); resizeGlobal(); });
+
+      function Particle(canvas, isGlobal) {
+        this.canvas = canvas;
+        this.isGlobal = isGlobal;
+        this.reset();
+      }
+      Particle.prototype.reset = function() {
+        this.x = Math.random() * this.canvas.width;
+        this.y = Math.random() * this.canvas.height;
+        this.size = this.isGlobal ? Math.random() * 1.5 + 0.3 : Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * (this.isGlobal ? 0.15 : 0.3);
+        this.speedY = (Math.random() - 0.5) * (this.isGlobal ? 0.15 : 0.3);
+        this.opacity = this.isGlobal ? Math.random() * 0.25 + 0.05 : Math.random() * 0.5 + 0.1;
+        this.pulse = Math.random() * Math.PI * 2;
+        // Color variety for global: green, blue, amber
+        if (this.isGlobal) {
+          var r = Math.random();
+          if (r < 0.6) this.color = [0, 209, 98];       // green (AI)
+          else if (r < 0.85) this.color = [59, 130, 246]; // blue (tech)
+          else this.color = [217, 119, 6];                 // amber (sales/€)
+        } else {
+          this.color = [0, 209, 98];
+        }
+      };
+      Particle.prototype.update = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.pulse += 0.015;
+        if (this.x < -10 || this.x > this.canvas.width + 10 || this.y < -10 || this.y > this.canvas.height + 10) {
+          this.reset();
+        }
+      };
+      Particle.prototype.draw = function(ctx) {
+        var alpha = this.opacity * (0.5 + 0.5 * Math.sin(this.pulse));
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + this.color.join(',') + ',' + alpha + ')';
+        ctx.fill();
+      };
+
+      function drawConnections(ctx, particles, maxDist, maxAlpha) {
+        for (var i = 0; i < particles.length; i++) {
+          for (var j = i + 1; j < particles.length; j++) {
+            var dx = particles[i].x - particles[j].x;
+            var dy = particles[i].y - particles[j].y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < maxDist) {
+              var alpha = (1 - dist / maxDist) * maxAlpha;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(0, 209, 98, ' + alpha + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Init hero particles
+      if (heroCanvas) {
+        var hCount = Math.min(80, Math.floor(heroCanvas.width * heroCanvas.height / 12000));
+        for (var i = 0; i < hCount; i++) heroParticles.push(new Particle(heroCanvas, false));
+      }
+      // Init global particles
+      if (globalCanvas) {
+        var gCount = Math.min(40, Math.floor(globalCanvas.width * globalCanvas.height / 40000));
+        for (var i = 0; i < gCount; i++) globalParticles.push(new Particle(globalCanvas, true));
+      }
+
+      function animate() {
+        if (heroCtx && heroCanvas) {
+          heroCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+          heroParticles.forEach(function(p) { p.update(); p.draw(heroCtx); });
+          drawConnections(heroCtx, heroParticles, 120, 0.08);
+        }
+        if (globalCtx && globalCanvas) {
+          globalCtx.clearRect(0, 0, globalCanvas.width, globalCanvas.height);
+          globalParticles.forEach(function(p) { p.update(); p.draw(globalCtx); });
+          drawConnections(globalCtx, globalParticles, 150, 0.04);
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // === Floating AI/Sales tokens ===
+    (function() {
+      var container = document.getElementById('floatingTokens');
+      if (!container) return;
+
+      var tokens = [
+        // AI / Claude Code
+        '{ }', '< />', 'AI', '>_', 'def', 'async', 'await',
+        'claude', 'opus', 'sonnet', 'prompt', 'agent',
+        'const ai =', 'import AI', 'model.run()', '$ claude',
+        'embeddings', 'tokens', 'LLM', 'RAG', 'API',
+        'function()', '=>', 'deploy()', 'npm run',
+        // Sales / Revenue
+        '\u20AC', '\u20AC\u20AC\u20AC', '5.000\u20AC', '10k/m\u00eas',
+        'pipeline', 'lead', 'close()', 'proposal',
+        'MRR', 'ARR', 'ROI', 'deal.sign()',
+        'outreach()', 'client++', 'revenue\u2191',
+        // Services
+        'chatbot', 'automacao', 'workflow', 'n8n',
+        'solution', 'SaaS', 'retainer', 'scale()',
+      ];
+
+      var colors = [
+        'rgba(0,209,98,',    // green - AI
+        'rgba(59,130,246,',  // blue - code
+        'rgba(217,119,6,',   // amber - sales
+        'rgba(168,85,247,',  // purple - services
+      ];
+
+      function spawnToken() {
+        var el = document.createElement('span');
+        el.className = 'token';
+        var text = tokens[Math.floor(Math.random() * tokens.length)];
+        el.textContent = text;
+
+        var colorBase = colors[Math.floor(Math.random() * colors.length)];
+        var maxOpacity = 0.06 + Math.random() * 0.06;
+        var size = 10 + Math.random() * 14;
+        var x = Math.random() * 100;
+        var travel = -(100 + Math.random() * 300);
+        var duration = 15 + Math.random() * 25;
+        var rotStart = (Math.random() - 0.5) * 20;
+        var rotEnd = (Math.random() - 0.5) * 20;
+
+        el.style.cssText =
+          'left:' + x + '%;' +
+          'bottom:-30px;' +
+          'font-size:' + size + 'px;' +
+          'color:' + colorBase + maxOpacity + ');' +
+          '--max-opacity:' + maxOpacity + ';' +
+          '--travel:' + travel + 'px;' +
+          '--rot-start:' + rotStart + 'deg;' +
+          '--rot-end:' + rotEnd + 'deg;' +
+          'animation:token-float ' + duration + 's linear forwards;';
+
+        container.appendChild(el);
+        setTimeout(function() { el.remove(); }, duration * 1000);
+      }
+
+      // Spawn initial batch
+      for (var i = 0; i < 15; i++) {
+        setTimeout(spawnToken, Math.random() * 5000);
+      }
+      // Keep spawning
+      setInterval(spawnToken, 1200);
+    })();
+
+    // === Data streams for testimonials ===
+    (function() {
+      var streamsContainer = document.getElementById('dataStreams');
+      if (!streamsContainer) return;
+      for (var i = 0; i < 12; i++) {
+        var line = document.createElement('div');
+        line.className = 'data-stream';
+        line.style.left = (5 + Math.random() * 90) + '%';
+        line.style.height = (30 + Math.random() * 70) + '%';
+        line.style.animationDuration = (6 + Math.random() * 8) + 's';
+        line.style.animationDelay = (Math.random() * 10) + 's';
+        streamsContainer.appendChild(line);
+      }
+    })();
+
+    // === Exit intent ===
+    var exitShown = false;
+    document.addEventListener('mouseout', function(e) {
+      if (exitShown) return;
+      if (e.clientY <= 0 && e.relatedTarget === null) {
+        // Check if registration modal is open
+        if (document.getElementById('modal').classList.contains('open')) return;
+        exitShown = true;
+        document.getElementById('exitModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+    function closeExitModal() {
+      document.getElementById('exitModal').classList.remove('open');
+      if (!document.getElementById('modal').classList.contains('open')) {
+        document.body.style.overflow = '';
+      }
+    }
+    document.getElementById('exitModal').addEventListener('click', function(e) {
+      if (e.target === this) closeExitModal();
+    });
+  </script>
+</body>
+</html>
