@@ -298,7 +298,7 @@
       position: fixed;
       bottom: 1.5rem;
       left: 1.5rem;
-      z-index: 90;
+      z-index: 999;
       display: flex;
       align-items: center;
       gap: 0.625rem;
@@ -1099,22 +1099,7 @@
       .btn-lg { height: 3.125rem; padding: 0 1.75rem; font-size: 1rem; }
       .warning { font-size: 0.8125rem; margin-top: 0.75rem; }
 
-      /* Stacking cards on mobile */
-      .grid-3,
-      .day-cards,
-      .testimonials-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      .grid-3 > *,
-      .day-cards > *,
-      .testimonials-grid > * {
-        position: sticky;
-        top: var(--stack-top, 1rem);
-        z-index: var(--stack-z, 1);
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
-      }
+      /* Cards mobile - normal scroll */
     }
 
     /* Responsive */
@@ -1639,16 +1624,7 @@
 
   <!-- Scripts -->
   <script>
-    // === Stacking cards z-index + offset ===
-    if (window.innerWidth < 640) {
-      document.querySelectorAll('.grid-3, .day-cards, .testimonials-grid').forEach(function(container) {
-        var children = container.children;
-        for (var i = 0; i < children.length; i++) {
-          children[i].style.setProperty('--stack-z', i + 1);
-          children[i].style.setProperty('--stack-top', (8 + i * 6) + 'px');
-        }
-      });
-    }
+    // === Stacking cards removed ===
 
     // === Social proof toasts ===
     (function() {
@@ -1679,9 +1655,10 @@
       toast.className = 'social-toast';
       toast.innerHTML = '<span class="social-toast-icon">\u2705</span><div><div class="social-toast-text"><span class="social-toast-name"></span> acabou de se inscrever</div><div class="social-toast-time"></div></div>';
       document.body.appendChild(toast);
-      toast.addEventListener('click', function() {
+      toast.addEventListener('click', function(e) {
+        e.stopPropagation();
         toast.classList.remove('show');
-        openModal();
+        setTimeout(function() { openModal(); }, 300);
       });
 
       var nameEl = toast.querySelector('.social-toast-name');
