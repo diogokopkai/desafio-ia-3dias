@@ -1092,6 +1092,30 @@
       .countdown-inline { font-size: 1rem; }
       .btn-lg { height: 3.125rem; padding: 0 1.75rem; font-size: 1rem; }
       .warning { font-size: 0.8125rem; margin-top: 0.75rem; }
+
+      /* Stacking cards on mobile */
+      .grid-3,
+      .day-cards,
+      .testimonials-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .grid-3 > *,
+      .day-cards > *,
+      .testimonials-grid > * {
+        position: sticky;
+        top: 1rem;
+        z-index: var(--stack-z, 1);
+        margin-bottom: -2rem;
+        transition: box-shadow 0.3s ease;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+      }
+      .grid-3 > :last-child,
+      .day-cards > :last-child,
+      .testimonials-grid > :last-child {
+        margin-bottom: 0;
+      }
     }
 
     /* Responsive */
@@ -1616,6 +1640,16 @@
 
   <!-- Scripts -->
   <script>
+    // === Stacking cards z-index ===
+    if (window.innerWidth < 640) {
+      document.querySelectorAll('.grid-3, .day-cards, .testimonials-grid').forEach(function(container) {
+        var children = container.children;
+        for (var i = 0; i < children.length; i++) {
+          children[i].style.setProperty('--stack-z', i + 1);
+        }
+      });
+    }
+
     // === Social proof toasts ===
     (function() {
       var people = [
