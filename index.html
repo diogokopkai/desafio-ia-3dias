@@ -334,13 +334,19 @@
       color: var(--muted-foreground);
       margin-top: 0.125rem;
     }
+    .social-toast { cursor: pointer; }
     @media (max-width: 639px) {
       .social-toast {
         left: 0.75rem;
         right: 0.75rem;
         max-width: none;
-        bottom: 1rem;
+        bottom: auto;
+        top: 0.75rem;
         padding: 0.625rem 0.875rem;
+        transform: translateY(-120%);
+      }
+      .social-toast.show {
+        transform: translateY(0);
       }
       .social-toast-text { font-size: 0.75rem; }
     }
@@ -1099,22 +1105,15 @@
       .testimonials-grid {
         display: flex;
         flex-direction: column;
-        gap: 0;
+        gap: 1rem;
       }
       .grid-3 > *,
       .day-cards > *,
       .testimonials-grid > * {
         position: sticky;
-        top: 1rem;
+        top: var(--stack-top, 1rem);
         z-index: var(--stack-z, 1);
-        margin-bottom: -2rem;
-        transition: box-shadow 0.3s ease;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
-      }
-      .grid-3 > :last-child,
-      .day-cards > :last-child,
-      .testimonials-grid > :last-child {
-        margin-bottom: 0;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
       }
     }
 
@@ -1640,12 +1639,13 @@
 
   <!-- Scripts -->
   <script>
-    // === Stacking cards z-index ===
+    // === Stacking cards z-index + offset ===
     if (window.innerWidth < 640) {
       document.querySelectorAll('.grid-3, .day-cards, .testimonials-grid').forEach(function(container) {
         var children = container.children;
         for (var i = 0; i < children.length; i++) {
           children[i].style.setProperty('--stack-z', i + 1);
+          children[i].style.setProperty('--stack-top', (8 + i * 6) + 'px');
         }
       });
     }
@@ -1679,6 +1679,10 @@
       toast.className = 'social-toast';
       toast.innerHTML = '<span class="social-toast-icon">\u2705</span><div><div class="social-toast-text"><span class="social-toast-name"></span> acabou de se inscrever</div><div class="social-toast-time"></div></div>';
       document.body.appendChild(toast);
+      toast.addEventListener('click', function() {
+        toast.classList.remove('show');
+        openModal();
+      });
 
       var nameEl = toast.querySelector('.social-toast-name');
       var timeEl = toast.querySelector('.social-toast-time');
