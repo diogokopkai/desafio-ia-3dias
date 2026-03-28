@@ -1858,7 +1858,7 @@
       if (card.classList.contains('playing')) return;
       var videoId = card.dataset.video;
       var iframe = card.querySelector('.video-embed');
-      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&mute=1&rel=0&playsinline=1&modestbranding=1';
       card.classList.add('playing');
     }
 
